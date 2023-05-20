@@ -58,7 +58,7 @@ When each new table has a schema that is a faithful subset of the original table
 | 5          | Ahmed   | 19  | Philosophy        | Boston          |
 
 
-### Horizontal Sharding
+### Vertical Sharding
 
 #### shard 1
 
