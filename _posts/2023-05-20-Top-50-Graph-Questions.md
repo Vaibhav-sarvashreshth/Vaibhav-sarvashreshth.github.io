@@ -161,12 +161,14 @@ vector<int> dfsOfGraph(int V, vector<int> adj[]) {
 
 ```
 
-## ** **
+## **Find the number of islands**
+
+Given a grid of size n*m (n is the number of rows and m is the number of columns in the grid) consisting of '0's (Water) and '1's(Land). Find the number of islands.
+
+Note: An island is either surrounded by water or boundary of grid and is formed by connecting adjacent lands horizontally or vertically or diagonally i.e., in all 8 directions.
 
 
-
-
-### Solution (using BFS)
+### **Solution (using BFS)**
 
 ```cpp
 #include <vector>
@@ -211,7 +213,7 @@ return no_of_provinces;
 
 }
 ```
-### Solution (using DFS)
+### **Solution (using DFS)**
 
 ```cpp
 
@@ -249,7 +251,7 @@ void dfs(int index, vector<vector<int>> adj, int visited[], int V)
 
 ```
 
-## ***Find the number of islands*
+## **Find the number of islands**
 
 Given a grid of size n*m (n is the number of rows and m is the number of columns in the grid) consisting of '0's (Water) and '1's(Land). Find the number of islands.
 
@@ -258,7 +260,7 @@ Note: An island is either surrounded by water or boundary of grid and is formed 
 
 
 
-### Solution
+### **Solution**
 
 ```cpp
 
@@ -327,7 +329,319 @@ int vis[501][501]={{0}};
         
     }
 
+
 ```
+
+## **Detect cycle in an undirected graph**
+
+Given an undirected graph with V vertices and E edges, check whether it contains any cycle or not. Graph is in the form of adjacency list where adj[i] contains all the nodes ith node is having edge with.
+
+
+### **Solution**
+
+```cpp
+#include <vector>
+using namespace std;
+
+// Depth-First Search (DFS) function
+bool dfs(vector<int> adj[], vector<bool>& visited, int source, int parent) {
+visited[source] = true;
+
+
+
+for (auto node : adj[source]) {
+    if (visited[node] == false) {
+        if (dfs(adj, visited, node, source)) {
+            return true;
+        }
+    } else if (node != parent) {
+        return true;
+    }
+}
+
+return false;
+
+}
+
+// Function to check whether the graph contains any cycle
+bool isCycle(int V, vector<int> adj[]) {
+vector<bool> visited(V, false);
+
+
+
+for (int i = 0; i < V; i++) {
+    if (visited[i] == false) {
+        if (dfs(adj, visited, i, -1)) {
+            return true;
+        }
+    }
+}
+
+return false;
+
+}
+
+```
+
+
+## **Hamiltonian Path**
+
+A Hamiltonian path, is a path in an undirected graph that visits each vertex exactly once. Given an undirected graph, the task is to check if a Hamiltonian path is present in it or not.
+
+
+### **Solution**
+
+```cpp
+ bool dfs(int n, vector<int> adj[], vector<int> &vist, int src){
+        if(n==0){
+            return true;
+        }
+        vist[src]=1;
+        for(auto &x:adj[src]){
+            if(vist[x]==0){
+                if(dfs(n-1,adj,vist,x)){
+                    return true;
+                }
+            }
+        }
+        vist[src]=0;
+        return false;
+    }
+    bool check(int N,int M,vector<vector<int>> Edges)
+    {
+        // code here
+        int n= N, m= M;
+        vector<int> adj[n];
+        
+        for(auto &x:Edges){
+            adj[x[0]-1].push_back(x[1]-1);
+            adj[x[1]-1].push_back(x[0]-1);
+        }
+        
+        vector<int> vist(n,0);
+        
+        for(int i=0;i<n;i++){
+            if(dfs(n-1,adj,vist,i)){
+                return true;
+            }
+        }
+        return false;
+    }
+```
+
+## **Prerequisite Tasks**
+
+There are a total of N tasks, labeled from 0 to N-1. Some tasks may have prerequisites, for example to do task 0 you have to first complete task 1, which is expressed as a pair: [0, 1]
+Given the total number of tasks N and a list of prerequisite pairs P, find if it is possible to finish all tasks.
+
+
+### **Solution**
+
+```cpp
+bool isPossible(int N, vector<pair<int, int> >& prerequisites) {
+	    // Code here
+	    
+	    int n = N;
+	    
+	    vector<vector<int>> graph(n);
+        vector<int> indegree(n,0);
+        for(auto c : prerequisites)
+        {
+            graph[c.second].push_back(c.first);
+            indegree[c.first]++;
+        }
+        
+        vector<int> toposort;
+        queue<int> q;
+        for(int i=0;i<n;i++)
+        {
+            if(indegree[i]==0) 
+                q.push(i);
+        }
+        while(!q.empty())
+        {
+            int curr = q.front();
+            q.pop();
+            toposort.push_back(curr);
+            
+            for(auto nbr: graph[curr])
+            {
+                indegree[nbr]--;
+                if(indegree[nbr]==0) 
+                    q.push(nbr);
+            }
+        }
+        if(toposort.size()!=n) 
+        	return false;
+        	
+        return true;
+	}
+```
+
+
+## **Course Schedule**
+There are a total of n tasks you have to pick, labeled from 0 to n-1. Some tasks may have prerequisites tasks, for example to pick task 0 you have to first finish tasks 1, which is expressed as a pair: [0, 1]
+Given the total number of n tasks and a list of prerequisite pairs of size m. Find a ordering of tasks you should pick to finish all tasks.
+Note: There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all tasks, return an empty array. Returning any correct order will give the output as 1, whereas any invalid order will give the output "No Ordering Possible".
+
+
+
+### **Solution**
+
+```cpp
+bool dfs(int i ,vector<vector<int>> &adj,vector<int> &visited , vector<int> &recursive_stack ,stack<int>&answer)
+    {
+         recursive_stack[i]= true;
+         visited[i]=true;
+         
+        for(auto node: adj[i])
+        {
+            
+            if(!visited[node])
+            {
+                if(dfs(node,adj,visited,recursive_stack,answer))
+                {
+                    return true;
+                }
+                
+            }
+            else if(recursive_stack[node]==true)
+            {
+                return true;
+            }
+            
+            
+        }
+        answer.push(i);
+        recursive_stack[i]= false;
+        
+        return false;
+    }
+        
+    vector<int> findOrder(int n, int m, vector<vector<int>> prerequisites) 
+    {
+        //code here
+        vector<int>ordering;
+        vector<int>visited(n,0),recursive_stack(n,0);
+	    
+	    vector<vector<int>> adj(n);
+	    stack<int>answer;
+	    
+	    // converting the list into adj matrix
+	     for (auto& prerequisite : prerequisites) {
+            int course = prerequisite[0];
+            int prerequisiteCourse = prerequisite[1];
+            adj[prerequisiteCourse].push_back(course);
+        }
+	    
+	    
+	    // now traversing through adj using dfs
+	    
+	    for(int i=0;i<n;i++)
+	    {
+	        if(!visited[i])
+	        {
+	            if(dfs(i,adj,visited,recursive_stack,answer))
+	            {
+	                
+	                return {};
+	            }
+	        }
+	    }
+	    
+	    while (!answer.empty()) {
+            ordering.push_back(answer.top());
+            answer.pop();
+        }
+
+        return ordering;
+        
+        
+        
+    }
+```
+
+
+## **Circle of strings**
+Given an array of lowercase strings A[] of size N, determine if the strings can be chained together to form a circle.
+A string X can be chained together with another string Y if the last character of X is same as first
+character of Y. If every string of the array can be chained, it will form a circle.
+
+For example, for the array arr[] = {"for", "geek", "rig", "kaf"} the answer will be Yes as the given strings can be chained as "for", "rig", "geek" and "kaf"
+
+
+
+### **Solution**
+
+```cpp
+void dfs(int node, vector<int> adj[], vector<int> &vis){
+     vis[node]=1;
+     
+     for(auto child: adj[node]){
+         if(vis[child]==0){
+             dfs(child,adj,vis);
+         }
+     }
+    }
+    int isCircle(int N, vector<string> A)
+    {
+        
+        int n= N;
+        vector<int> adj[26];
+        vector<int> in(26,0), out(26,0);
+        
+        for(int i=0;i<n;i++){
+            int ch1=A[i][0]-'a';
+            int ch2=A[i].back()-'a';
+            
+            adj[ch1].push_back(ch2); //linking all componenets to form a eulerian cycle and test later
+            in[ch2]++;
+            out[ch1]++;
+        }
+        
+        vector<int> vis(26,0); 
+        int src=0;
+        
+        
+        for(int i=0;i<26;i++){
+            if(in[i]!=out[i]){
+                return 0;
+            }
+        }
+        for(int i=0;i<26;i++){
+            if(out[i]!=0){
+                src=i;
+                break;
+            }
+        }
+        
+        dfs(src,adj,vis);
+        
+        for(int i=0;i<26;i++){
+            if(vis[i]==0 && out[i]){
+                return 0;
+            }
+        }
+        
+        return 1;
+    }
+
+```
+
+
+
+
+## ** **
+
+
+
+
+### **Solution**
+
+```cpp
+
+```
+
 
 
 ## Further Improvement / reading
