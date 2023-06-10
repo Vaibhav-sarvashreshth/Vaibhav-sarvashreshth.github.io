@@ -1,0 +1,138 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://vaibhav-sarvashreshth.github.io//</id>
+  <title>Vaibhav`s Blog</title>
+  <subtitle>This is description.</subtitle>
+  <updated>2023-06-10T12:56:23+05:30</updated>
+  <author>
+    <name>Vaibhav Siddodhan Mokale</name>
+    <uri>https://vaibhav-sarvashreshth.github.io//</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="https://vaibhav-sarvashreshth.github.io//feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="en"
+    href="https://vaibhav-sarvashreshth.github.io//"/>
+  <generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator>
+  <rights> © 2023 Vaibhav Siddodhan Mokale </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>Top 50 Graph Questions</title>
+    <link href="https://vaibhav-sarvashreshth.github.io//posts/Priority-Queue/" rel="alternate" type="text/html" title="Top 50 Graph Questions" />
+    <published>2023-06-06T22:48:18+05:30</published>
+  
+    <updated>2023-06-06T22:48:18+05:30</updated>
+  
+    <id>https://vaibhav-sarvashreshth.github.io//posts/Priority-Queue/</id>
+    <content src="https://vaibhav-sarvashreshth.github.io//posts/Priority-Queue/" />
+    <author>
+      <name>Vaibhav Siddodhan Mokale</name>
+    </author>
+
+  
+    
+    <category term="GRAPH" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Top 50 Graph Questions</title>
+    <link href="https://vaibhav-sarvashreshth.github.io//posts/Top-50-Graph-Questions/" rel="alternate" type="text/html" title="Top 50 Graph Questions" />
+    <published>2023-05-16T22:48:18+05:30</published>
+  
+    <updated>2023-06-10T12:41:08+05:30</updated>
+  
+    <id>https://vaibhav-sarvashreshth.github.io//posts/Top-50-Graph-Questions/</id>
+    <content src="https://vaibhav-sarvashreshth.github.io//posts/Top-50-Graph-Questions/" />
+    <author>
+      <name>Vaibhav Siddodhan Mokale</name>
+    </author>
+
+  
+    
+    <category term="GRAPH" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      Top 50 Graph Problems
+
+Looking to master graph theory and solve graph problems efficiently? You’re in the right place! This blog provides solutions to the top 50 graph problems along with multiple approaches for each problem. We also ensure that the written code is well-commented for better understanding.
+
+Graphs are essential data structures used in various fields, including computer science, ...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Database Sharding</title>
+    <link href="https://vaibhav-sarvashreshth.github.io//posts/hello-homelab/" rel="alternate" type="text/html" title="Database Sharding" />
+    <published>2023-05-16T22:48:18+05:30</published>
+  
+    <updated>2023-05-20T22:50:55+05:30</updated>
+  
+    <id>https://vaibhav-sarvashreshth.github.io//posts/hello-homelab/</id>
+    <content src="https://vaibhav-sarvashreshth.github.io//posts/hello-homelab/" />
+    <author>
+      <name>Vaibhav Siddodhan Mokale</name>
+    </author>
+
+  
+    
+    <category term="DBMS" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      What is Database Sharding
+
+Sharding is a type of database partitioning that separates large databases into smaller, faster, more easily managed parts. These smaller parts are called data shards. The word shard means “a small part of a whole.”
+
+Horizontal Vs vertical sharding:
+
+To achieve sharding, the rows or columns of a larger database table are split into multiple smaller tables.
+
+When we sp...
+    </summary>
+  
+
+  </entry>
+
+</feed>
+
+
