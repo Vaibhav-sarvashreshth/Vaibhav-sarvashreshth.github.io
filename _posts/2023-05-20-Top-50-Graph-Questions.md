@@ -105,7 +105,6 @@ Note: Use a recursive approach to find the DFS traversal of the graph starting f
 ### Solution
 
 ```cpp
-
 /*
  * Depth First Traversal (DFS) of a Graph
  *
@@ -114,50 +113,37 @@ Note: Use a recursive approach to find the DFS traversal of the graph starting f
  * The traversal order is from left to right according to the graph.
  */
 
-#include <vector>
-using namespace std;
-
-// Recursive function to perform DFS traversal
-void dfsrec(vector<int> adj[], int i, vector<bool>& visited, vector<int>& ans) {
-    /* If the current vertex is already visited, return */
-    if (visited[i]) {
-        return;
+void dfs(vector<int> adj[],int i,vector<bool>&visited,vector<int>&ans)
+    {
+        
+            visited[i]=true;
+            ans.push_back(i);
+            for(int vertex : adj[i])
+            {
+                if(!visited[vertex])
+                {
+                    dfs(adj,vertex,visited,ans);
+                }
+                
+            }
+        
     }
-
-    /* Mark the current vertex as visited */
-    visited[i] = true;
-
-    /* Add the current vertex to the result */
-    ans.push_back(i);
-
-    /* Traverse all adjacent vertices of the current vertex */
-    for (int u : adj[i]) {
-        /* If the adjacent vertex is not visited, recursively call the DFS function */
-        if (!visited[u]) {
-            dfsrec(adj, u, visited, ans);
+    
+    vector<int> dfsOfGraph(int V, vector<int> adj[])
+    {
+        vector<int> ans;
+        vector<bool> visited(V,false);
+        
+        
+        for(int i=0;i<V;i++)
+        {
+            if(!visited[i])
+            {
+                dfs(adj,i,visited,ans);
+            }
         }
+        return ans;
     }
-}
-
-// Function to find the DFS traversal of the graph
-vector<int> dfsOfGraph(int V, vector<int> adj[]) {
-    vector<int> ans;
-    vector<bool> visited(V, false);
-
-    /* Traverse all vertices of the graph */
-    for (int i = 0; i < V; i++) {
-        /* If the current vertex is not visited, call the DFS function */
-        if (!visited[i]) {
-            dfsrec(adj, i, visited, ans);
-        }
-    }
-
-    return ans;
-}
-
-
-
-
 
 ```
 
@@ -486,7 +472,7 @@ Note: There may be multiple correct orders, you just need to return one of them.
 
 
 
-### **Solution**
+### **Solution (Using Kosarajus Algorithm)**
 
 ```cpp
 bool dfs(int i ,vector<vector<int>> &adj,vector<int> &visited , vector<int> &recursive_stack ,stack<int>&answer)
@@ -561,6 +547,60 @@ bool dfs(int i ,vector<vector<int>> &adj,vector<int> &visited , vector<int> &rec
     }
 ```
 
+## **Solution (Using Kahn’s algorithm for Topological Sorting)**
+
+```cpp
+vector<int> findOrder(int n, int m, vector<vector<int>> prerequisites) 
+    {
+        
+        
+        /* Here I used Kahns algorithm, first will find the inorder of all nodes, if we found
+        inorder=0 for a node, then we will push it in a queue, to traverse the graph like we did in BFS.
+        Then through that node we will travserv the other nodes, decrementing their indegrees.
+        */
+        vector<vector<int>>graph(n);
+        vector<int>indegree(n,0);
+        queue<int>q;
+        vector<int>toposort;
+        
+        for(int i=0;i<m;i++)
+        {
+            graph[prerequisites[i][1]].push_back(prerequisites[i][0]);
+            indegree[prerequisites[i][0]]++;
+        }
+        
+        for(int i=0;i<n;i++)
+        {
+            if(indegree[i]==0)
+            {
+                q.push(i);
+                toposort.push_back(i);
+            }
+        }
+        
+        while(!q.empty())
+        {
+            int front = q.front();
+            q.pop();
+            for(auto node : graph[front])
+            {
+                indegree[node]--;
+                if(indegree[node]==0)
+                {
+                    q.push(node);
+                    toposort.push_back(node);
+                }
+            }
+        }
+        if(toposort.size() != n)
+        {
+            return vector<int>();
+        }
+        return toposort;
+        
+    }
+```
+
 
 ## **Circle of strings**
 Given an array of lowercase strings A[] of size N, determine if the strings can be chained together to form a circle.
@@ -574,27 +614,35 @@ For example, for the array arr[] = {"for", "geek", "rig", "kaf"} the answer will
 ### **Solution**
 
 ```cpp
-void dfs(int node, vector<int> adj[], vector<int> &vis){
-     vis[node]=1;
-     
-     for(auto child: adj[node]){
-         if(vis[child]==0){
-             dfs(child,adj,vis);
-         }
-     }
+    void dfs(int node, vector<int> adj[], vector<int> &vis)
+    {
+        vis[node]=1;
+        
+        for(auto child: adj[node])
+        {
+            if(vis[child]==0)
+            {
+                dfs(child,adj,vis);
+            }
+        }
+
     }
+
     int isCircle(int N, vector<string> A)
     {
-        
         int n= N;
         vector<int> adj[26];
         vector<int> in(26,0), out(26,0);
         
-        for(int i=0;i<n;i++){
+        for(int i=0;i<n;i++)
+        {
             int ch1=A[i][0]-'a';
             int ch2=A[i].back()-'a';
             
             adj[ch1].push_back(ch2); //linking all componenets to form a eulerian cycle and test later
+
+            // so here we are linking the first character and the last character of a string together
+
             in[ch2]++;
             out[ch1]++;
         }
@@ -603,13 +651,18 @@ void dfs(int node, vector<int> adj[], vector<int> &vis){
         int src=0;
         
         
-        for(int i=0;i<26;i++){
-            if(in[i]!=out[i]){
+        for(int i=0;i<26;i++)
+        {
+            if(in[i]!=out[i])
+            {
                 return 0;
             }
         }
-        for(int i=0;i<26;i++){
-            if(out[i]!=0){
+
+        for(int i=0;i<26;i++)
+        {
+            if(out[i]!=0)
+            {
                 src=i;
                 break;
             }
@@ -617,8 +670,10 @@ void dfs(int node, vector<int> adj[], vector<int> &vis){
         
         dfs(src,adj,vis);
         
-        for(int i=0;i<26;i++){
-            if(vis[i]==0 && out[i]){
+        for(int i=0;i<26;i++)
+        {
+            if(vis[i]==0 && out[i])
+            {
                 return 0;
             }
         }
@@ -631,8 +686,8 @@ void dfs(int node, vector<int> adj[], vector<int> &vis){
 
 
 
-## ** **
-
+## **Bipartite Graph**
+Given an adjacency list of a graph adj  of V no. of vertices having 0 based index. Check whether the graph is bipartite or not.
 
 
 
@@ -640,9 +695,333 @@ void dfs(int node, vector<int> adj[], vector<int> &vis){
 
 ```cpp
 
+    bool isBipartite(int V, vector<int>adj[])
+	{
+        /*This code works on a simple principle that, while traversing the graph, you first color the first node and then you color all its neighbour with alternate color, and you keep on repeating the process. While doing so, if you found any node which is already colored and has the same color as the parent node, then its not the bi-partite graph. Else it is. */
+
+        // this code works for disconnected as well as connected graph
+
+        // consider red as 0 and blue as 1
+
+	    vector<int>color(V,-1);
+	    queue<pair<int,int>>q; // first -> node, second -> color
+	    
+	    for(int i=0;i<V;i++)
+	    {
+	        if(color[i]==-1)
+	        {
+	            color[i]=0;
+	            q.push({i,0});
+	            while(!q.empty())
+    	        {
+    	            
+    	            pair<int,int> front = q.front();
+        	        q.pop();
+        	        int node = front.first;
+        	        int col = front.second;
+        	        
+        	        for(int neighbour : adj[node])
+        	        {
+        	            if(color[neighbour] == col)
+        	            {
+        	                return 0;
+        	            }
+        	            else if(color[neighbour]==-1)
+        	            {
+        	                color[neighbour] = (col)?(0):(1);
+        	                q.push({neighbour,color[neighbour]});
+        	            }
+        	        }
+    	            
+    	        }
+	            
+	        }
+	        
+	    }
+	    
+	    return 1;
+	}
+
+```
+## **Detect cycle in a directed graph**
+Given a Directed Graph with V vertices (Numbered from 0 to V-1) and E edges, check whether it contains any cycle or not.
+
+
+
+### **Solution**
+```cpp
+    bool dfs(int i ,vector<int> adj[],vector<int> &visited , vector<int> &recursive_stack )
+    {
+         recursive_stack[i]= true;
+         visited[i]=true;
+
+        for(auto node: adj[i])
+        {
+            if(!visited[node])
+            {
+                if(dfs(node,adj,visited,recursive_stack))
+                {
+                    return true;
+                }
+                
+            }
+            else if(recursive_stack[node]==true) // that means if it is visited and also present in a recursive stack , which means cycle is present 
+            {
+                return true;
+            }
+
+        }
+        
+        recursive_stack[i]= false;
+        return false;
+    }
+
+    bool isCyclic(int V, vector<int> adj[])
+    {
+        
+        vector<int>visited(V,0),recursive_stack(V,0);
+        
+        for(int i=0;i<V;i++)
+        {
+            for(auto node : adj[i])
+            {
+                if(!visited[i])
+                {
+                    // note that dfs function here returns true if cycle is present and returns false when cycle is not present
+                    if(dfs(i,adj,visited,recursive_stack))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+        
+    }
 ```
 
+## **Find whether path exist**
+Given a grid of size n*n filled with 0, 1, 2, 3. Check whether there is a path possible from the source to destination. You can traverse up, down, right and left.
+The description of cells is as follows:
 
+A value of cell 1 means Source. \
+A value of cell 2 means Destination.\
+A value of cell 3 means Blank cell.\
+A value of cell 0 means Wall.
+
+Note: There are only a single source and a single destination.
+
+
+
+### **Solution Using BFS**
+
+```cpp
+    int dx[4] = { -1, 1, 0, 0};
+    int dy[4] = {0, 0, -1, 1};
+    bool val(int x,int y,int n)
+    {
+        if(x<0 || y<0 || x>=n || y>=n)
+        {
+            return 0;
+        }
+        return 1;
+    }
+    
+    
+    bool is_Possible(vector<vector<int>>& grid) 
+    {
+        //code here
+        int n=grid.size();
+        queue<pair<int,int>>q;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    q.push({i,j});
+                    grid[i][j]=0;
+                    break;
+                }
+            }
+        }
+        while(!q.empty())
+        {
+            int x=q.front().first;
+            int y=q.front().second;
+            q.pop();
+            for(int i=0;i<4;i++)
+            {
+                int nx=x+dx[i];
+                int ny=y+dy[i];
+                if(val(nx,ny,n)==1 && grid[nx][ny]!=0)
+                {
+                    
+                    if(grid[nx][ny]==2)
+                    {
+                        return 1;
+                    }
+
+                    //here just aking sure that, we do not visit the same vertex twice, so making 3 to 0
+
+                    grid[nx][ny]=0;
+                    q.push({nx,ny});
+                }
+            }
+            
+        }
+        return 0;
+        
+    }
+```
+
+### **Solution Using DFS**
+```cpp
+bool dfs(int x, int y, vector<vector<int>>& v)
+    {
+        if(x<0 || x>=v.size() || y<0 || y>=v.size() || v[x][y]==0) return false;
+        if(v[x][y]==2) return true;
+        v[x][y] = 0;
+        
+        bool ans = dfs(x+1,y,v) || dfs(x-1,y,v) || dfs(x,y+1,v) || dfs(x,y-1,v);
+        return ans;
+    }
+    
+    bool is_Possible(vector<vector<int>>& v) 
+    {
+        int n = v.size();
+        queue<pair<int,int>> q;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(v[i][j]==1)
+                {
+                    if(dfs(i,j,v)) return true;
+                    else return false;
+                }
+            }
+        }
+    }
+```
+
+## **Topological sort**
+
+Given a Directed Acyclic Graph (DAG) with V vertices and E edges, Find any Topological Sorting of that Graph.
+
+
+
+
+### **Solution BFS (Kahn's Algo)**
+
+BFS Approach || Kahn's Algo
+Idea
+
+The idea is that all nodes which will be at starting will have indegree 0. 
+
+`Algorithm`
+
+Store Indegree of all nodes in Array.\
+Push nodes in Queue whose indegree == 0.\
+Now, For each node in Queue.\
+Pop the current node & Store into resultant Array\
+Remove indegree count of all neighbours of current node.\
+If neighbours indegree becomes 0 the push into queue.\
+Finally, return resultant Array.
+
+
+```cpp
+    vector<int> topoSort(int V, vector<int> adj[])
+    {
+	    vector<int> res;
+	    vector<int> indegree(V, 0);
+	    
+	    for(int i = 0; i < V; i++)
+        {
+	        for(int nbr : adj[i])
+            {
+	            indegree[nbr]++;
+	        }
+	    }
+	    
+	    queue<int> q;
+	    for(int i = 0; i < V; i++)
+        {
+	        if(indegree[i] == 0)
+            {
+	            q.push(i);
+	        }
+	    }
+	    
+	    while(!q.empty())
+        {
+	        int curr = q.front(); q.pop();
+	        res.push_back(curr);
+	        
+	        for(int nbr : adj[curr])
+            {
+	            indegree[nbr]--;
+	            if(indegree[nbr] == 0) q.push(nbr);
+	        }
+	    }
+	    
+	    return res;
+	}
+
+```
+
+### **Solution DFS Approach**
+`Idea`
+
+Node that comes at last must be present at last. Hence, the idea is to store last visited at bottom. Thus, Stack comes into picture.
+
+`Algorithm`
+
+Make visited Array to tackle both disconnected & visited Nodes.
+Call DFS on each unvisited node
+Call DFS on unvisited Neighbours
+After making all calls to Neighbours Store current Node in a Stack.
+Finally, pop all the elements of stack into resultant Vector
+
+```cpp
+    void dfs(int start, vector<bool> &vis, stack<int> &s, vector<int> adj[])
+    {
+	    vis[start] = 1;
+	    
+	    for(int nbr : adj[start])
+        {
+	        if(!vis[nbr])
+            {
+	            dfs(nbr, vis, s, adj);
+	        }
+	    }
+	    
+	    s.push(start);
+	}
+	
+	vector<int> topoSort(int V, vector<int> adj[])
+    {
+	    vector<bool> vis(V);
+	    stack<int> s;
+	    for(int i = 0; i < V; i++)
+        {
+	        if(!vis[i])
+            {
+	            dfs(i, vis, s, adj);
+	        }
+	    }
+
+	    vector<int> res;
+
+	    for(int i = 0; i < V; i++)
+        {
+	        res.push_back(s.top()); 
+            s.pop();
+	    }
+	    return res;
+	}
+```
 
 ## Further Improvement / reading
 
