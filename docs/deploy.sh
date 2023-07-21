@@ -4,7 +4,7 @@ echo "Starting to update the repo......"
 git status
 git add .
 git commit -m "Comment"
-git push
+git push origin main
 
 
 echo "Repo updation completed succesfully ......"
